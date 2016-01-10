@@ -8,12 +8,12 @@ namespace SR.Models
     public class PlayerModel
     {
         //Connection id from signalR
-        string PlayerId;
-        enum House
+        public string PlayerId;
+        public enum House
         {
             Stark,Baratheon,Martel,Lanister
         }
-        int PowerTokens;
-        int Regions;
+        public int PowerTokens;
+        public int Regions;
     }
 }

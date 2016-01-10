@@ -121,12 +121,13 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Resources\HouseFlags\Stark.png" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery.signalR-2.1.2.js" />
     <Content Include="Scripts\jquery.signalR-2.1.2.min.js" />
-    <Content Include="Script\Game.css" />
-    <Content Include="Script\layout.css" />
+    <Content Include="Scripts\Game.css" />
+    <Content Include="Scripts\layout.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -137,9 +138,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\GameState.cs" />
+    <Compile Include="Models\LobbyModel.cs" />
     <Compile Include="Models\PlayerModel.cs" />
     <Compile Include="Models\Region.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -157,10 +160,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Resources\Counters\" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Script\Game.ts" />
-    <TypeScriptCompile Include="Script\Lobby.ts" />
+    <TypeScriptCompile Include="Scripts\Game.ts" />
+    <TypeScriptCompile Include="Scripts\Lobby.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

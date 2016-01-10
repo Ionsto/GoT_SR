@@ -64,3 +64,16 @@ C:\Users\mpfs\Contacts\Documents\GitHub\GoT_SR\SR\SR\bin\System.Web.Mvc.xml
 C:\Users\mpfs\Contacts\Documents\GitHub\GoT_SR\SR\SR\obj\Debug\SR.csprojResolveAssemblyReference.cache
 C:\Users\mpfs\Contacts\Documents\GitHub\GoT_SR\SR\SR\obj\Debug\SR.dll
 C:\Users\mpfs\Contacts\Documents\GitHub\GoT_SR\SR\SR\obj\Debug\SR.pdb
+C:\Users\mpfs\Contacts\Documents\GitHub\GoT_SR\SR\SR\bin\Microsoft.AspNet.SignalR.Core.dll
+C:\Users\mpfs\Contacts\Documents\GitHub\GoT_SR\SR\SR\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+C:\Users\mpfs\Contacts\Documents\GitHub\GoT_SR\SR\SR\bin\Microsoft.Owin.dll
+C:\Users\mpfs\Contacts\Documents\GitHub\GoT_SR\SR\SR\bin\Microsoft.Owin.Host.SystemWeb.dll
+C:\Users\mpfs\Contacts\Documents\GitHub\GoT_SR\SR\SR\bin\Microsoft.Owin.Security.dll
+C:\Users\mpfs\Contacts\Documents\GitHub\GoT_SR\SR\SR\bin\Newtonsoft.Json.dll
+C:\Users\mpfs\Contacts\Documents\GitHub\GoT_SR\SR\SR\bin\Owin.dll
+C:\Users\mpfs\Contacts\Documents\GitHub\GoT_SR\SR\SR\bin\Microsoft.AspNet.SignalR.Core.xml
+C:\Users\mpfs\Contacts\Documents\GitHub\GoT_SR\SR\SR\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+C:\Users\mpfs\Contacts\Documents\GitHub\GoT_SR\SR\SR\bin\Microsoft.Owin.xml
+C:\Users\mpfs\Contacts\Documents\GitHub\GoT_SR\SR\SR\bin\Microsoft.Owin.Host.SystemWeb.xml
+C:\Users\mpfs\Contacts\Documents\GitHub\GoT_SR\SR\SR\bin\Microsoft.Owin.Security.xml
+C:\Users\mpfs\Contacts\Documents\GitHub\GoT_SR\SR\SR\bin\Newtonsoft.Json.xml
