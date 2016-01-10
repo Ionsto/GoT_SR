@@ -1,1 +1,2 @@
-//# sourceMappingURL=Lobby.js.map
+function Ready() {
+}
