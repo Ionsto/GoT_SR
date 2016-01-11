@@ -11,9 +11,11 @@ namespace SR
 {
     public class Startup
     {
+        public static ServerInstance server;
         public void Configuration(IAppBuilder app)
         {
             app.MapSignalR();
+            server = new ServerInstance();
         }
     }
 }

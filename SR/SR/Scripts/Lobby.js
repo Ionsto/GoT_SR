@@ -7,26 +7,23 @@ var Consensus;
         return PokerUser;
     })();
     Consensus.PokerUser = PokerUser;
-    var PokerRoom = (function () {
-        function PokerRoom() {
-        }
-        return PokerRoom;
-    })();
-    Consensus.PokerRoom = PokerRoom;
-    var PokerCard = (function () {
-        function PokerCard() {
-        }
-        return PokerCard;
-    })();
-    Consensus.PokerCard = PokerCard;
 })(Consensus || (Consensus = {}));
-var lobbyProxy = $.connection.gameLobby;
-lobbyProxy.client.restart = function () {
-    console.log("restart");
+var lobbyProxy = $.connection.lobbyHub;
+lobbyProxy.client.startGame = function () {
+    document.location.pathname = "Game/Game/";
+};
+lobbyProxy.client.lobbyPlayerList = function (list) {
+    var outputdiv = $("#Output");
+    outputdiv.empty();
+    for (var name in list) {
+        outputdiv.add("<p>" + name + "</p>");
+    }
 };
 $.connection.hub.start().done(function () {
-    alert("connect");
     lobbyProxy.server.joinLobby("Lensto");
+    $("#ReadyButton").click(function () {
+        lobbyProxy.server.toggleLobby();
+    });
     console.log('Now connected, connection ID=' + $.connection.hub.id);
 }).fail(function () {
     console.log('Could not Connect!');

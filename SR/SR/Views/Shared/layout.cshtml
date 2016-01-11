@@ -4,13 +4,15 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    <script src="~/Script/layout.css"></script>
-    @RenderSection("Scripts", false/*required*/)
+    <link rel="stylesheet" type="text/css" href="~/Scripts/layout.css" />
+    @RenderSection("Scripts", false)
 </head>
 <body>
+    <header>
+        <p id="Title">GoT</p>
+    </header>
     <div>
         @RenderBody()
-        dsaajdaspdsa
     </div>
 </body>
 </html>

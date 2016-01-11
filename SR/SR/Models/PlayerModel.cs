@@ -9,6 +9,7 @@ namespace SR.Models
     {
         //Connection id from signalR
         public string PlayerId;
+        public string Name;
         public enum House
         {
             Stark,Baratheon,Martel,Lanister

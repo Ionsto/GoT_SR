@@ -134,6 +134,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\GameHub.cs" />
+    <Compile Include="Controllers\LobbyHub.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -141,6 +142,7 @@
     <Compile Include="Models\LobbyModel.cs" />
     <Compile Include="Models\PlayerModel.cs" />
     <Compile Include="Models\Region.cs" />
+    <Compile Include="Models\ServerInstance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

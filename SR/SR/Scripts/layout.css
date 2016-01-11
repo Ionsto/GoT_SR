@@ -2,3 +2,12 @@
     background-color:cornflowerblue;
     font-family:'Charlemagne Std';
 }
+#Title{
+    font-size:x-large;
+}
+header {
+    background-color:aquamarine;
+    outline-style:outset;
+    outline-width:2px;
+    outline-color:black;
+}

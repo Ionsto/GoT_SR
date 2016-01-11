@@ -7,23 +7,28 @@ using SR.Models;
 
 namespace SR.Controllers
 {
-    public class GameHub : Hub
+    public class LobbyHub : Hub
     {
+
         public void JoinLobby(string name)
         {
+            LobbyModel lobby = Startup.server.lobby;
             PlayerModel player = new PlayerModel();
             player.PlayerId = Context.ConnectionId;
-            Startup.server.lobby.PlayerList.Add(player);
-            Startup.server.lobby.PlayerReady.Add(Context.ConnectionId, false);
+            lobby.PlayerList.Add(player);
+            lobby.PlayerReady.Add(Context.ConnectionId, false);
+            //Send list of all players
+            List<string> PlayerNameList = new List<string>();
+            foreach (PlayerModel p in lobby.PlayerList)
+            {
+                PlayerNameList.Add(p.Name);
+            }
+            Clients.All.lobbyPlayerList(PlayerNameList);
         }
         public void ToggleLobby()
         {
             LobbyModel lobby = Startup.server.lobby;
-            if (!lobby.PlayerReady.ContainsKey(Context.ConnectionId))
-            {
-                lobby.PlayerReady.Add(Context.ConnectionId, false);
-            }
-            lobby.PlayerReady[Context.ConnectionId] = lobby.PlayerReady[Context.ConnectionId] !=  true;
+            lobby.PlayerReady[Context.ConnectionId] = lobby.PlayerReady[Context.ConnectionId] != true;
             if (!lobby.PlayerReady.ContainsValue(false))
             {
                 //Start game
@@ -34,11 +39,6 @@ namespace SR.Controllers
         {
             //Randomise the player's house
 
-        }
-        private void Restart()
-        {
-            Startup.server.Restart();
-            Clients.All.Restart();
         }
     }
 }
