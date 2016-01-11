@@ -12,11 +12,12 @@ var lobbyProxy = $.connection.lobbyHub;
 lobbyProxy.client.startGame = function () {
     document.location.pathname = "Game/Game/";
 };
-lobbyProxy.client.lobbyPlayerList = function (list) {
+lobbyProxy.client.lobbyPlayerList = function (list, house, ready) {
     var outputdiv = $("#Output");
     outputdiv.empty();
-    for (var name in list) {
-        outputdiv.add("<p>" + name + "</p>");
+    var ResUrl = "/Resources/HouseFlags/sterk.png";
+    for (var i = 0; i < list.length; ++i) {
+        outputdiv.append("<div>" + list[i] + ":" + ready[i].toString() + "<img class='banner' width='60' height='60' src= '" + ResUrl + "'/>" + "</div>");
     }
 };
 $.connection.hub.start().done(function () {

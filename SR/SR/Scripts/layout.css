@@ -11,3 +11,8 @@ header {
     outline-width:2px;
     outline-color:black;
 }
+.banner{
+    outline-style:dotted;
+    outline-color:black;
+    vertical-align: middle;
+}

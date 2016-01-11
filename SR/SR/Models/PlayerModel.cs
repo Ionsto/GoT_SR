@@ -10,10 +10,11 @@ namespace SR.Models
         //Connection id from signalR
         public string PlayerId;
         public string Name;
-        public enum House
+        public enum HouseType
         {
             Stark,Baratheon,Martel,Lanister
         }
+        public HouseType House = HouseType.Stark;
         public int PowerTokens;
         public int Regions;
     }
