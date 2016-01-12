@@ -120,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Resources\Maps\North\North.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Resources\HouseFlags\Stark.png" />
     <Content Include="Resources\HouseFlags\sterk.png" />

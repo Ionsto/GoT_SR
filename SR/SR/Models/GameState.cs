@@ -9,7 +9,9 @@ namespace SR.Models
 {
     public class GameState
     {
-        List<PlayerModel> Players = new List<PlayerModel>();
-        
+        public int CurrentTurn = 0;
+        public int MaxTurns = 0;
+        public List<PlayerModel> Players = new List<PlayerModel>();
+        public List<Region>  
     }
 }

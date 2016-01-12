@@ -1,0 +1,28 @@
+﻿{
+  "RegionCount": 9,
+  "RegionList": {
+    "0": {
+      "Name": "Winterfell",
+      //These are absalout vertex poses
+      "VertexPoints": [
+        [ 0, 1 ],
+        [ 0, 1 ],
+        [ 0, 1 ],
+        [ 0, 1 ],
+        [ 0, 1 ]
+      ],
+      "DefenseType": "Stronghold"
+    },
+    "1": {
+      "Name": "White harbour",
+      "VertexPoints": [
+        [ 0, 1 ],
+        [ 0, 1 ],
+        [ 0, 1 ],
+        [ 0, 1 ],
+        [ 0, 1 ]
+      ],
+      "DefenseType": ""
+    }
+  }
+}
