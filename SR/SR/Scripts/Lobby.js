@@ -10,7 +10,7 @@ var Consensus;
 })(Consensus || (Consensus = {}));
 var lobbyProxy = $.connection.lobbyHub;
 lobbyProxy.client.startGame = function () {
-    document.location.pathname = "Game/Game/";
+    document.location.pathname = "Game/Game/?PlayerId=" + $.connection.hub.id;
 };
 lobbyProxy.client.lobbyPlayerList = function (list, house, ready) {
     var outputdiv = $("#Output");

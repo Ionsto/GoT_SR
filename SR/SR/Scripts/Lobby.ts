@@ -26,7 +26,7 @@ module Consensus {
 }
 var lobbyProxy = $.connection.lobbyHub;
 lobbyProxy.client.startGame = function () {
-    document.location.pathname = "Game/Game/"
+    document.location.pathname = "Game/Game/?PlayerId=" + $.connection.hub.id;
 };
 lobbyProxy.client.lobbyPlayerList = function (list: string[], house:number[], ready:boolean[]) {
     var outputdiv = $("#Output");

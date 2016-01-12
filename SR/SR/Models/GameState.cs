@@ -12,6 +12,6 @@ namespace SR.Models
         public int CurrentTurn = 0;
         public int MaxTurns = 0;
         public List<PlayerModel> Players = new List<PlayerModel>();
-        public List<Region>  
+        public List<Region> Regions = new List<Region>();
     }
 }
