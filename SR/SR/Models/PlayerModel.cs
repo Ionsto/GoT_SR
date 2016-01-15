@@ -8,8 +8,12 @@ namespace SR.Models
     public class PlayerModel
     {
         //Connection id from signalR
-        public string PlayerId;
-        public string Name;
+        public string PlayerId = "";
+        //Connection id from signalR for connection to game hub
+        public string GameId = "";
+        public string Name = "lensto";
+        public int Score = 0;
+        public int Supply = 0;
         public enum HouseType
         {
             Stark,Baratheon,Martel,Lanister

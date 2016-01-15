@@ -4,41 +4,75 @@ using System.Linq;
 using System.Web;
 using Microsoft.AspNet.SignalR;
 using SR.Models;
+using System.Threading.Tasks;
 
 namespace SR.Controllers
 {
+    class ExportPlayer
+    {
+        public int House;
+        public int Score;
+        public int Supply;
+    }
+    class ExportMove
+    {
+        public string RegionId;
+        public int MoveType;
+    }
     public class GameHub : Hub
     {
-        public void JoinLobby(string name)
+        ServerInstance CurrentServer = Startup.server;
+        public void RequestGameData()
         {
-            PlayerModel player = new PlayerModel();
-            player.PlayerId = Context.ConnectionId;
-            Startup.server.lobby.PlayerList.Add(player);
-            Startup.server.lobby.PlayerReady.Add(Context.ConnectionId, false);
+            Clients.Caller.startGame(CurrentServer.game.MapName);
         }
-        public void ToggleLobby()
+        public void JoinGame(string UUID)
         {
-            LobbyModel lobby = Startup.server.lobby;
-            if (!lobby.PlayerReady.ContainsKey(Context.ConnectionId))
+            int FoundPlayer = -1;
+            for (int i = 0; i < CurrentServer.PlayerList.Count; ++i)
             {
-                lobby.PlayerReady.Add(Context.ConnectionId, false);
+                if (CurrentServer.PlayerList[i].PlayerId == UUID)
+                {
+                    FoundPlayer = i;
+                    CurrentServer.game.PlayerReady.Add(Context.ConnectionId);
+                    break;
+                }
             }
-            lobby.PlayerReady[Context.ConnectionId] = lobby.PlayerReady[Context.ConnectionId] !=  true;
-            if (!lobby.PlayerReady.ContainsValue(false))
+            if (FoundPlayer != -1)
             {
-                //Start game
-                Clients.All.startGame();
+                CurrentServer.PlayerList[FoundPlayer].GameId = Context.ConnectionId;
             }
-        }
-        public void RandomiseLobby()
-        {
-            //Randomise the player's house
-
+            else
+            {
+                Clients.Caller.forceOff();
+            }
+            if (CurrentServer.game.PlayerReady.Count == CurrentServer.PlayerList.Count)
+            {
+                ExportPlayer[] players = new ExportPlayer[CurrentServer.PlayerList.Count];
+                for(int i = 0;i < CurrentServer.PlayerList.Count;++i)
+                {
+                    players[i] = new ExportPlayer();
+                    players[i].House = (int)CurrentServer.PlayerList[i].House;
+                    players[i].Score = CurrentServer.PlayerList[i].Score;
+                    players[i].Supply = CurrentServer.PlayerList[i].Supply;
+                }
+                Clients.Caller.startRound(players);
+                CurrentServer.game.PlayerReady.Clear();
+            }
         }
         private void Restart()
         {
-            Startup.server.Restart();
+            CurrentServer.Restart();
             Clients.All.Restart();
+        }
+        public override Task OnDisconnected(bool stopped)
+        {
+            if (CurrentServer.CurrentGameState == ServerInstance.ServerGameState.Game)
+            {
+                CurrentServer.game.PlayerReady.Remove(Context.ConnectionId);
+                //Probs update other players on what is happening
+            }
+            return (base.OnDisconnected(stopped));
         }
     }
 }

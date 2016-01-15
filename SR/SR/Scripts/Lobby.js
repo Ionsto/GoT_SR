@@ -17,7 +17,11 @@ lobbyProxy.client.lobbyPlayerList = function (list, house, ready) {
     outputdiv.empty();
     var ResUrl = "/Resources/HouseFlags/sterk.png";
     for (var i = 0; i < list.length; ++i) {
-        outputdiv.append("<div>" + list[i] + ":" + ready[i].toString() + "<img class='banner' width='60' height='60' src= '" + ResUrl + "'/>" + "</div>");
+        var DivTag = "<div>";
+        if (i == 0) {
+            DivTag = "<div id='LobbyLeader'>";
+        }
+        outputdiv.append(DivTag + list[i] + ":" + ready[i].toString() + "<img class='banner' width='60' height='60' src= '" + ResUrl + "'/>" + "</div>");
     }
 };
 $.connection.hub.start().done(function () {
@@ -29,3 +33,4 @@ $.connection.hub.start().done(function () {
 }).fail(function () {
     console.log('Could not Connect!');
 });
+//# sourceMappingURL=Lobby.js.map

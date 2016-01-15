@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" type="text/css" href="~/Scripts/layout.css" />
-    @RenderSection("Scripts", false)
+    @RenderSection("Style", false)
 </head>
 <body>
     <header>
         <p id="Title">GoT</p>
     </header>
-    <div>
         @RenderBody()
-    </div>
+        @RenderSection("Scripts", false)
 </body>
 </html>

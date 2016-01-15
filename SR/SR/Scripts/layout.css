@@ -3,7 +3,8 @@
     font-family:'Charlemagne Std';
 }
 #Title{
-    font-size:x-large;
+    font-size:40px;
+    position:center;
 }
 header {
     background-color:aquamarine;

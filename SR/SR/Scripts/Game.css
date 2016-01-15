@@ -1,2 +1,23 @@
-﻿body {
+﻿#MenuDiv{
+    position:absolute;
+    visibility:collapse;
+    width:100px;
+    height:200px;
+    background-color:white;
+    background-position-x:50px;
+    background-position-y:50px;
+    width:60px;
+    height:180px;
+    outline-style:dotted;
+    outline-width:5px;
+}
+label.OrderLable > input.OrderRadio{ /* HIDE RADIO */
+  display:none;
+}
+label.OrderLable > input.OrderRadio + img.OrderImage{ /* IMAGE STYLES */
+  cursor:pointer;
+  border:2px solid transparent;
+}
+label.OrderLable > input.OrderRadio:checked + img.OrderImage{ /* (CHECKED) IMAGE STYLES */
+  border:2px solid #f00;
 }

@@ -21,5 +21,9 @@ namespace SR.Controllers
         {
             return View();
         }
+        public ActionResult Denied()
+        {
+            return View();
+        }
     }
 }

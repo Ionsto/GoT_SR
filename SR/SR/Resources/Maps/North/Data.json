@@ -1,0 +1,39 @@
+﻿{
+  "FactionCount": 4,
+  "FactionList": [
+    "Stark",
+    "Bolton"
+  ],
+  "RegionCount": 2,
+  "RegionList": [
+    {
+      "Name": "Winterfell",
+      "DefenseType": "Stronghold",
+      "VertexPoints": [
+        [ 405, 372 ],
+        [ 602, 395 ],
+        [ 658, 537 ],
+        [ 597, 661 ],
+        [ 545, 657 ],
+        [ 554, 691 ],
+        [ 363, 864 ],
+        [ 313, 872 ],
+        [ 209, 674 ],
+        [ 117, 600 ],
+        [ 137, 507 ],
+        [ 382, 466 ]
+      ]
+    },
+    {
+      "Name": "White harbour",
+      "DefenseType": "null",
+      "VertexPoints": [
+        [ 0, 1 ],
+        [ 0, 1 ],
+        [ 0, 1 ],
+        [ 0, 1 ],
+        [ 0, 1 ]
+      ]
+    }
+  ]
+}
