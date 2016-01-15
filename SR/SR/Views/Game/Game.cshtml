@@ -11,20 +11,22 @@
     <script src="~/signalr/hubs"></script>
     <script src="~/Scripts/Game.js"></script>
 }
+
 <div id="MenuDiv">
-    <label class="OrderLable">
-        <input class="OrderRadio" name="move" type="radio" />
-        <img class="OrderImage" src="~/Resources/Counters/Attack.png" />
+    <label class="OrderLable" id="MoveOrder">
+        <input class="OrderRadio" name="move" value="Move" type="radio" />
+        <img class="OrderImage" src="~/Resources/Counters/Move.png" />
     </label><br />
-    <label class="OrderLable">
-        <input class="OrderRadio" name="move" type="radio" />
-        <img class="OrderImage" src="~/Resources/Counters/Attack.png" />
+    <label class="OrderLable"  id="ConsolidateOrder">
+        <input class="OrderRadio" name="move" value="Consolidate"  type="radio" />
+        <img class="OrderImage" src="~/Resources/Counters/Consolidate.png" />
     </label><br />
-    <label class="OrderLable">
-        <input class="OrderRadio" name="move" type="radio" />
-        <img class="OrderImage" src="~/Resources/Counters/Attack.png" />
+    <label class="OrderLable" id="RaidOrder">
+        <input class="OrderRadio" name="move" value="Raid" type="radio" />
+        <img class="OrderImage" src="~/Resources/Counters/Raid.png" />
     </label><br />
 </div>
+
 <input type="button"id="TurnButton" value="Resolve turn"/> <div id="PowerCounter" ></div> <br />
 
 <canvas id="RenderCanvas" width="500" height="500" >Canvas Not working</canvas>

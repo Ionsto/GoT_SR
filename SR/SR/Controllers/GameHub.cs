@@ -10,9 +10,12 @@ namespace SR.Controllers
 {
     class ExportPlayer
     {
+        public string Name;
+        public string PlayerId;
         public int House;
         public int Score;
         public int Supply;
+        public int[] Moves;
     }
     class ExportMove
     {
@@ -24,7 +27,7 @@ namespace SR.Controllers
         ServerInstance CurrentServer = Startup.server;
         public void RequestGameData()
         {
-            Clients.Caller.startGame(CurrentServer.game.MapName);
+            Clients.Caller.startGame(CurrentServer.game.MapName,Context.ConnectionId);
         }
         public void JoinGame(string UUID)
         {
@@ -51,10 +54,14 @@ namespace SR.Controllers
                 ExportPlayer[] players = new ExportPlayer[CurrentServer.PlayerList.Count];
                 for(int i = 0;i < CurrentServer.PlayerList.Count;++i)
                 {
+                    PlayerModel player = CurrentServer.PlayerList[i];
                     players[i] = new ExportPlayer();
-                    players[i].House = (int)CurrentServer.PlayerList[i].House;
-                    players[i].Score = CurrentServer.PlayerList[i].Score;
-                    players[i].Supply = CurrentServer.PlayerList[i].Supply;
+                    players[i].Name = player.Name;
+                    players[i].PlayerId = Context.ConnectionId;
+                    players[i].House = (int)player.House;
+                    players[i].Score = player.Score;
+                    players[i].Supply = player.Supply;
+                    players[i].Moves = new int[]{2,1,2,1,2};
                 }
                 Clients.Caller.startRound(players);
                 CurrentServer.game.PlayerReady.Clear();
