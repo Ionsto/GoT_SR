@@ -17,6 +17,10 @@ namespace SR.Models
         public List<Region> Regions = new List<Region>();
         public void DoTurn()
         {
-        } 
+        }
+        public void LoadMap()
+        {
+             
+        }
     }
 }

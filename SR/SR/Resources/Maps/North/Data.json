@@ -1,6 +1,6 @@
 ﻿{
   "FactionCount": 4,
-  "FactionList": [
+  "HouseList": [
     "Stark",
     "Bolton"
   ],
@@ -8,6 +8,7 @@
   "RegionList": [
     {
       "Name": "Winterfell",
+      "House": "Stark",
       "CounterLocation": [418, 559],
       "DefenseType": "Stronghold",
       "VertexPoints": [
@@ -27,8 +28,9 @@
     },
     {
       "Name": "White harbour",
+      "House": "Stark",
       "CounterLocation": [720, 776],
-      "DefenseType": "null",
+      "DefenseType": "",
       "VertexPoints": [
         [ 545, 658 ],
         [ 919, 686 ],
@@ -41,7 +43,8 @@
     },
     {
       "Name": "Moat Cailin",
-      "DefenseType": "null",
+      "House": "",
+      "DefenseType": "",
       "CounterLocation" : [525, 853],
       "VertexPoints" :[
         [ 556, 692 ],

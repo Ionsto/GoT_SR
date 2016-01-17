@@ -125,8 +125,12 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Resources\Counters\Consolidate.png" />
+    <Content Include="Resources\Counters\ConsolidateStar.png" />
     <Content Include="Resources\Counters\Move.png" />
+    <Content Include="Resources\Counters\MoveStar.png" />
+    <Content Include="Resources\Counters\Null.png" />
     <Content Include="Resources\Counters\Raid.png" />
+    <Content Include="Resources\Counters\RaidStar.png" />
     <Content Include="Resources\Maps\North\Data.json" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />

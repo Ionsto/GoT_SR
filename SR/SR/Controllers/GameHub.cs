@@ -16,6 +16,7 @@ namespace SR.Controllers
         public int Score;
         public int Supply;
         public int[] Moves;
+        public int MaxStarMoves;
     }
     class ExportMove
     {
@@ -61,9 +62,10 @@ namespace SR.Controllers
                     players[i].House = (int)player.House;
                     players[i].Score = player.Score;
                     players[i].Supply = player.Supply;
-                    players[i].Moves = new int[]{2,1,2,1,2};
+                    players[i].Moves = new int[]{2,1,2,1,2,1};
+                    players[i].MaxStarMoves = 1;
                 }
-                Clients.Caller.startRound(players);
+                Clients.Caller.startRound(players,CurrentServer.game.Regions);
                 CurrentServer.game.PlayerReady.Clear();
             }
         }

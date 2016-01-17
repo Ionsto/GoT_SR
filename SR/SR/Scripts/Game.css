@@ -1,13 +1,11 @@
 ﻿#MenuDiv{
     position:absolute;
     visibility:collapse;
-    width:100px;
-    height:200px;
     background-color:white;
     background-position-x:50px;
     background-position-y:50px;
-    width:60px;
-    height:180px;
+    width:120px;
+    height:240px;
     outline-style:dotted;
     outline-width:5px;
 }
