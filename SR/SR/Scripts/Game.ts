@@ -24,7 +24,7 @@ module Consensus {
     export class Player {
         public Name: string;
         public PlayerId: string;
-        public House: number;
+        public House: string;
         public Score: number;
         public Supply: number;
         public Moves: number[];
@@ -35,7 +35,7 @@ module Consensus {
         public MoveType: number;
     }
     export class Region {
-        public House: HouseType;
+        public House: string;
         public Id: number;
         public Units: number[];
         public Player: number;
@@ -68,14 +68,13 @@ class JsonRegion {
 }
 class JsonLayout {
     FactionCount: number;
-    FactionList: string[];
+    HouseList: string[];
     RegionCount: number;
     RegionList: JsonRegion[];
 }
-enum HouseType { Stark, Baratheon, Martel, Lanister };
 class ClientRegion {
     Id: number;
-    House: HouseType;
+    House: string;
     Name: string;
     MoveType: string;
     CounterLocation: number[];
@@ -115,8 +114,8 @@ class World {
         }
     }
     RenderHouse(region: ClientRegion) {
-        if (region.House == HouseType.Stark) {
-            Ctx.drawImage(StarkFlagImage, region.CounterLocation[0] - this.CameraX, region.CounterLocation[1] - this.CameraY)
+        if (region.House in FlagImageDictonary) {
+            Ctx.drawImage(FlagImageDictonary[region.House], region.CounterLocation[0] - this.CameraX, region.CounterLocation[1] - this.CameraY, 50, 50)
         }
     }
     RenderOrder(region: ClientRegion) {
@@ -158,7 +157,6 @@ class World {
 }
 
 function ButtonDown(event: MouseEvent) {
-    //console.log(event.button);
     if (event.button != 2) {
         world.MenuDiv.style.visibility = "collapse";
         world.SelectedRegion = -1;
@@ -251,7 +249,7 @@ var PlayerUUID = "";
 var InitCount = 0;
 var WorldMap = new Image();++InitCount;
 var LayoutJSON: JsonLayout; ++InitCount;
-var StarkFlagImage: HTMLImageElement = new Image(); ++InitCount;
+var FlagImageDictonary = {};
 
 var MoveCounterImage: HTMLImageElement = new Image(); ++InitCount;
 var MoveCounterStarImage: HTMLImageElement = new Image(); ++InitCount;
@@ -260,15 +258,13 @@ var ConsolidateCounterStarImage: HTMLImageElement = new Image(); ++InitCount;
 var RaidCounterImage: HTMLImageElement = new Image(); ++InitCount;
 var RaidCounterStarImage: HTMLImageElement = new Image(); ++InitCount;
 
-StarkFlagImage.onload = function () { Init("Move Flag"); };
-
 MoveCounterImage.onload = function () { Init("Move Counter"); };
 MoveCounterStarImage.onload = function () { Init("Move Star Counter"); };
 ConsolidateCounterImage.onload = function () { Init("Consl Counter"); };
 ConsolidateCounterStarImage.onload = function () { Init("Consl Star Counter"); };
 RaidCounterImage.onload = function () { Init("Raid Counter"); };
 RaidCounterStarImage.onload = function () { Init("Raid Star Counter"); };
-StarkFlagImage.src = "/Resources/HouseFlags/Stark.png";
+
 MoveCounterImage.src = "/Resources/Counters/Move.png";
 MoveCounterStarImage.src = "/Resources/Counters/MoveStar.png";
 ConsolidateCounterImage.src = "/Resources/Counters/Consolidate.png";
@@ -296,6 +292,7 @@ gameHub.client.forceOff = function () {
     document.location.pathname = "Game/Denied/";
 }
 gameHub.client.startRound = function (players: Consensus.Player[], regions: Consensus.Region[]) {
+    console.log("Start game");
     world.Players = players;
     world.GameReadied = false;
     for (var i = 0; i < world.Players.length; ++i) {
@@ -330,7 +327,18 @@ gameHub.client.startGame = function (map: string,playerid:string) {
     PlayerId = playerid;
     WorldMap.onload = function () { Init("World map"); };
     WorldMap.src = "/Resources/Maps/" + MapName + "/Image.png";
-    $.getJSON("/Resources/Maps/" + MapName + "/Data.json", function (data) { LayoutJSON = data; Init("Layout json") });
+    $.getJSON("/Resources/Maps/" + MapName + "/Data.json", function (data) {
+        LayoutJSON = data;
+        for (var name of LayoutJSON.HouseList) {
+            FlagImageDictonary[name] = new Image();
+            ++InitCount;
+            FlagImageDictonary[name].onload = function () {
+            Init("Flag");
+            };
+            FlagImageDictonary[name].src = "/Resources/HouseFlags/" + name + ".png";
+        }
+        Init("Layout json");
+    });
 }
 function Init(name) {
     console.log(name + " has loaded");
@@ -348,7 +356,7 @@ function Init(name) {
         Canvas.oncontextmenu = function (e) { return false };
         world.MenuDiv.oncontextmenu = function (e) { return false };
         $(".OrderRadio").change(function () {
-            if (world.SelectedRegion != null && world.Players[world.MyPlayer].House == world.SelectedRegion) {
+            if (world.SelectedRegion != null && world.Players[world.MyPlayer].House == world.Regions[world.SelectedRegion].House) {
                 var MoveType = $(this).val();
                 if (world.Regions[world.SelectedRegion].MoveType == "Move") {
                     world.MovesLeft += 1;
@@ -396,7 +404,6 @@ function Init(name) {
                 UpdateMoveDiv();
             }
         });
-        gameHub.server.joinGame(PlayerUUID);
         for (var i = 0; i < world.LayoutData.RegionCount; ++i) {
             var jsonregion = world.LayoutData.RegionList[i];
             var newregion = new ClientRegion();
@@ -404,10 +411,10 @@ function Init(name) {
             newregion.Name = jsonregion.Name;
             newregion.CounterLocation = jsonregion.CounterLocation;
             newregion.Id = i;
-            alert(jsonregion.House + ":" + HouseType.Stark + ":" + HouseType[jsonregion.House]);
-            newregion.House = HouseType[jsonregion.House];
+            newregion.House = jsonregion.House;
             world.Regions.push(newregion);
         }
+        gameHub.server.joinGame(PlayerUUID);
     }
 }
 

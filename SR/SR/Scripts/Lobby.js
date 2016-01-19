@@ -15,13 +15,12 @@ lobbyProxy.client.startGame = function () {
 lobbyProxy.client.lobbyPlayerList = function (list, house, ready) {
     var outputdiv = $("#Output");
     outputdiv.empty();
-    var ResUrl = "/Resources/HouseFlags/sterk.png";
     for (var i = 0; i < list.length; ++i) {
         var DivTag = "<div>";
         if (i == 0) {
             DivTag = "<div id='LobbyLeader'>";
         }
-        outputdiv.append(DivTag + list[i] + ":" + ready[i].toString() + "<img class='banner' width='60' height='60' src= '" + ResUrl + "'/>" + "</div>");
+        outputdiv.append(DivTag + list[i] + ":" + ready[i].toString() + " <img class='banner' width='60' height='60' src= '/Resources/HouseFlags/" + house[i] + ".png'/>" + "</div>");
     }
 };
 $.connection.hub.start().done(function () {
@@ -33,3 +32,4 @@ $.connection.hub.start().done(function () {
 }).fail(function () {
     console.log('Could not Connect!');
 });
+//# sourceMappingURL=Lobby.js.map

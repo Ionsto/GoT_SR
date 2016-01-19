@@ -9,6 +9,6 @@ namespace SR.Models
     {
         public PlayerModel LobbyLeader = null;
         public Dictionary<string, bool> PlayerReady = new Dictionary<string, bool>();
-
+        public List<string> HousesLeft = new List<string>();
     }
 }

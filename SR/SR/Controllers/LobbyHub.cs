@@ -14,13 +14,15 @@ namespace SR.Controllers
         ServerInstance CurrentServer = Startup.server;
         public void JoinLobby(string name)
         {
-            if (CurrentServer.CurrentGameState == ServerInstance.ServerGameState.Lobby)
+            if (CurrentServer.CurrentGameState == ServerInstance.ServerGameState.Lobby && CurrentServer.MaxPlayers > CurrentServer.PlayerList.Count)
             {
                 Regex rgx = new Regex("[^a-zA-Z0-9 -]");
                 name = rgx.Replace(name, "");
                 LobbyModel lobby = Startup.server.lobby;
                 PlayerModel player = new PlayerModel();
                 player.Name = name;
+                player.House = CurrentServer.lobby.HousesLeft[0];
+                CurrentServer.lobby.HousesLeft.RemoveAt(0);
                 player.PlayerId = Context.ConnectionId;
                 CurrentServer.PlayerList.Add(player);
                 CurrentServer.lobby.PlayerReady.Add(Context.ConnectionId, false);
@@ -40,6 +42,7 @@ namespace SR.Controllers
             {
                 //Start game
                 CurrentServer.CurrentGameState = ServerInstance.ServerGameState.Game;
+                CurrentServer.game.Init();
                 Clients.All.startGame();
             }
             else
@@ -77,12 +80,12 @@ namespace SR.Controllers
         {
             LobbyModel lobby = CurrentServer.lobby;
             List<string> PlayerNameList = new List<string>();
-            List<int> PlayerHouseList = new List<int>();
+            List<string> PlayerHouseList = new List<string>();
             List<bool> PlayerReadyList = new List<bool>();
             foreach (PlayerModel p in CurrentServer.PlayerList)
             {
                 PlayerNameList.Add(p.Name);
-                PlayerHouseList.Add((int)p.House);
+                PlayerHouseList.Add(p.House);
                 PlayerReadyList.Add(lobby.PlayerReady[p.PlayerId]);
             }
             Clients.All.lobbyPlayerList(PlayerNameList, PlayerHouseList, PlayerReadyList);

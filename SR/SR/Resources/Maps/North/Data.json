@@ -28,7 +28,7 @@
     },
     {
       "Name": "White harbour",
-      "House": "Stark",
+      "House": "Bolton",
       "CounterLocation": [720, 776],
       "DefenseType": "",
       "VertexPoints": [
@@ -43,7 +43,7 @@
     },
     {
       "Name": "Moat Cailin",
-      "House": "",
+      "House": "Stark",
       "DefenseType": "",
       "CounterLocation" : [525, 853],
       "VertexPoints" :[

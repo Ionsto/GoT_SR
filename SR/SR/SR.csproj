@@ -131,6 +131,7 @@
     <Content Include="Resources\Counters\Null.png" />
     <Content Include="Resources\Counters\Raid.png" />
     <Content Include="Resources\Counters\RaidStar.png" />
+    <Content Include="Resources\HouseFlags\Bolton.png" />
     <Content Include="Resources\Maps\North\Data.json" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />

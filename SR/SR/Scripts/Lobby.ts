@@ -11,7 +11,7 @@ interface LobbyHubProxy {
 interface ILobbyClient {
     restart();
     startGame();
-    lobbyPlayerList(list: string[], house: number[], ready: boolean[]);
+    lobbyPlayerList(list: string[], house: string[], ready: boolean[]);
 }
 interface ILobbyServer {
     joinLobby(name: string);
@@ -28,16 +28,15 @@ var lobbyProxy = $.connection.lobbyHub;
 lobbyProxy.client.startGame = function () {
     document.location.pathname = "Game/Game/?PlayerId=" + $.connection.hub.id;
 };
-lobbyProxy.client.lobbyPlayerList = function (list: string[], house:number[], ready:boolean[]) {
+lobbyProxy.client.lobbyPlayerList = function (list: string[], house:string[], ready:boolean[]) {
     var outputdiv = $("#Output");
     outputdiv.empty();
-    var ResUrl = "/Resources/HouseFlags/sterk.png";
     for (var i = 0; i < list.length; ++i) {
         var DivTag = "<div>";
         if (i == 0) {
             DivTag = "<div id='LobbyLeader'>";
         }
-        outputdiv.append(DivTag + list[i] + ":" + ready[i].toString() + "<img class='banner' width='60' height='60' src= '" + ResUrl + "'/>" +"</div>");
+        outputdiv.append(DivTag + list[i] + ":" + ready[i].toString() + " <img class='banner' width='60' height='60' src= '/Resources/HouseFlags/" + house[i] + ".png'/>" +"</div>");
     }
 };
 $.connection.hub.start().done(function ()

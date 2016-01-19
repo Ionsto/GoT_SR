@@ -14,11 +14,7 @@ namespace SR.Models
         public string Name = "lensto";
         public int Score = 0;
         public int Supply = 0;
-        public enum HouseType
-        {
-            Stark,Baratheon,Martel,Lanister
-        }
-        public HouseType House = HouseType.Stark;
+        public string House = "Stark";
         public int PowerTokens;
         public int Regions;
     }

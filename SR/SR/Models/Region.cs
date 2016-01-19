@@ -7,13 +7,14 @@ namespace SR.Models
 {
     public class Region
     {
-        List<Enum> Units = new List<Enum>();
-        List<Region> AjacentRegions = new List<Region>();
-        PlayerModel ControlledPlayer = null;
-        Region Bridge = null;
-        int Supply = 0;
-        int Power = 0;
-        int Garrison = 0;
+        public List<Enum> Units = new List<Enum>();
+        public List<Region> AjacentRegions = new List<Region>();
+        public PlayerModel ControlledPlayer = null;
+        public string House = "";
+        public Region Bridge = null;
+        public int Supply = 0;
+        public int Power = 0;
+        public int Garrison = 0;
         enum Type {
         Land,Sea
         }
