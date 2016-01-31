@@ -13,7 +13,7 @@ interface IGameClient {
     restart();
     startGame(map: string,pid:string);
     forceOff();
-    startRound(players: Consensus.Player[], regions: Consensus.Region[]);
+    startRound(players: Consensus.Player[], regions: Consensus.Region[],gamestate:number);
 }
 interface IGameServer {
     requestGameData();
@@ -32,10 +32,11 @@ module Consensus {
     }
     export class Move {
         public RegionId: number;
-        public MoveType: number;
+        public MoveType: string;
     }
     export class Region {
         public House: string;
+        public Move: string;
         public Id: number;
         public Units: number[];
         public Player: number;
@@ -101,7 +102,7 @@ class World {
     MapImage: HTMLImageElement;
     Regions: ClientRegion[];
     Players: Consensus.Player[];
-    MyPlayer = 0;
+    MyPlayer: Consensus.Player;
     ButtonsDown: Array<boolean>;
     MenuDiv: HTMLDivElement;
     SelectedRegion = -1;
@@ -155,7 +156,21 @@ class World {
         return -1;
     }
 }
-
+class RaidTurn
+{
+    RaidRegions: number;
+    GreyDiv: HTMLDivElement;
+    RaidDiv: HTMLDivElement;
+    constructor() {
+        this.GreyDiv = <HTMLDivElement>document.getElementById("GreyDiv");
+        this.RaidDiv = <HTMLDivElement>document.getElementById("RaidDiv");
+        this.GreyDiv.style.visibility = "hidden";
+    }
+    Start() {
+        this.GreyDiv.style.visibility = "visible";
+        this.RaidDiv.style.visibility = "visible";
+    }
+}
 function ButtonDown(event: MouseEvent) {
     if (event.button != 2) {
         world.MenuDiv.style.visibility = "collapse";
@@ -242,6 +257,7 @@ var PowerCounter: HTMLDivElement;
 var MapName: string;
 var PlayerId = "";
 var world: World;
+var RaidTurnObject: RaidTurn;
 //Player info
 var PlayerUUID = "";
 
@@ -291,13 +307,13 @@ var MainLoop = null;
 gameHub.client.forceOff = function () {
     document.location.pathname = "Game/Denied/";
 }
-gameHub.client.startRound = function (players: Consensus.Player[], regions: Consensus.Region[]) {
+gameHub.client.startRound = function (players: Consensus.Player[], regions: Consensus.Region[], gameState: number) {
     console.log("Start game");
     world.Players = players;
     world.GameReadied = false;
     for (var i = 0; i < world.Players.length; ++i) {
         if (world.Players[i].PlayerId == PlayerId) {
-            world.MyPlayer = i;
+            world.MyPlayer = world.Players[i];
             world.MovesLeft = world.Players[i].Moves[0];
             world.MovesStarLeft = world.Players[i].Moves[1];
             world.ConsolidatesLeft = world.Players[i].Moves[2];
@@ -311,15 +327,21 @@ gameHub.client.startRound = function (players: Consensus.Player[], regions: Cons
     {
         var region = regions[i];
         world.Regions[i].House = region.House;
+        world.Regions[i].MoveType = region.Move;
+    }
+    if (InitCount == 0) {
+        //Update map
+        world.RenderWorld();
+        if (gameState == 1)
+        {
+            alert("Riad");
+            RaidTurnObject.Start();
+        }
     }
     if (MainLoop == null) {
         MainLoop = setInterval(function () {
             world.RenderWorld();
         }, 50);
-    }
-    if (InitCount != 0) {
-        //Update map
-        world.RenderWorld();
     }
 }
 gameHub.client.startGame = function (map: string,playerid:string) {
@@ -355,8 +377,9 @@ function Init(name) {
         Canvas.onmousemove = DragMap;
         Canvas.oncontextmenu = function (e) { return false };
         world.MenuDiv.oncontextmenu = function (e) { return false };
+        RaidTurnObject = new RaidTurn();
         $(".OrderRadio").change(function () {
-            if (world.SelectedRegion != null && world.Players[world.MyPlayer].House == world.Regions[world.SelectedRegion].House) {
+            if (world.SelectedRegion != null && world.MyPlayer.House == world.Regions[world.SelectedRegion].House) {
                 var MoveType = $(this).val();
                 if (world.Regions[world.SelectedRegion].MoveType == "Move") {
                     world.MovesLeft += 1;
@@ -421,8 +444,18 @@ function Init(name) {
 $.connection.hub.start().done(function () {
 
     $("#TurnButton").click(function () {
-        var MoveList: Consensus.Move[];
+        var MoveList: Consensus.Move[] = new Array();
         //Generate moves from js
+        for (var region of world.Regions)
+        {
+            if (region.House == world.MyPlayer.House) {
+                var move = new Consensus.Move();
+                move.RegionId = region.Id;
+                move.MoveType = region.MoveType;
+                MoveList.push(move);
+            }
+        }
+        RaidTurnObject.GreyDiv.style.visibility = "visible";
         world.GameReadied = true;
         world.MenuDiv.style.visibility = "collapse";
         world.SelectedRegion = -1;

@@ -20,8 +20,8 @@ namespace SR.Controllers
     }
     public class ExportMove
     {
-        public string RegionId;
-        public int MoveType;
+        public int RegionId;
+        public string MoveType;
     }
     public class GameHub : Hub
     {
@@ -38,7 +38,10 @@ namespace SR.Controllers
                 if (CurrentServer.PlayerList[i].PlayerId == UUID)
                 {
                     FoundPlayer = i;
-                    CurrentServer.game.PlayerReady.Add(Context.ConnectionId);
+                    if (!CurrentServer.game.PlayerReady.Contains(Context.ConnectionId))
+                    {
+                        CurrentServer.game.PlayerReady.Add(Context.ConnectionId);
+                    }
                     break;
                 }
             }
@@ -50,25 +53,35 @@ namespace SR.Controllers
             {
                 Clients.Caller.forceOff();
             }
-            if (CurrentServer.game.PlayerReady.Count == CurrentServer.PlayerList.Count)
+            if (CurrentServer.game.PlayerReady.Count == CurrentServer.PlayerList.Count && CurrentServer.game.CurrentTurn == -1)
             {
-                ExportPlayer[] players = new ExportPlayer[CurrentServer.PlayerList.Count];
-                for (int i = 0; i < CurrentServer.PlayerList.Count; ++i)
-                {
-                    PlayerModel player = CurrentServer.PlayerList[i];
-                    players[i] = new ExportPlayer();
-                    players[i].Name = player.Name;
-                    players[i].PlayerId = Context.ConnectionId;
-                    players[i].House = player.House;
-                    players[i].Score = player.Score;
-                    players[i].Supply = player.Supply;
-                    players[i].Moves = new int[] { 2, 1, 2, 1, 2, 1 };
-                    players[i].MaxStarMoves = 1;
-                }
+                CurrentServer.game.CurrentTurn = 0;
+                Clients.All.startRound(GetExportPlayers(), CurrentServer.game.Regions);
                 CurrentServer.game.PlayerReady.Clear();
-                Clients.All.startRound(players, CurrentServer.game.Regions);
-                CurrentServer.game.PlayerReady.Clear();
+            } else if (CurrentServer.game.CurrentTurn > -1)
+            {
+                //Players is rejoining
+                CurrentServer.game.CurrentTurn = 0;
+                Clients.Caller.startRound(GetExportPlayers(), CurrentServer.game.Regions);
             }
+
+        }
+        private ExportPlayer[] GetExportPlayers()
+        {
+            ExportPlayer[] players = new ExportPlayer[CurrentServer.PlayerList.Count];
+            for (int i = 0; i < CurrentServer.PlayerList.Count; ++i)
+            {
+                PlayerModel player = CurrentServer.PlayerList[i];
+                players[i] = new ExportPlayer();
+                players[i].Name = player.Name;
+                players[i].PlayerId = player.GameId;
+                players[i].House = player.House;
+                players[i].Score = player.Score;
+                players[i].Supply = player.Supply;
+                players[i].Moves = new int[] { 2, 1, 2, 1, 2, 1 };
+                players[i].MaxStarMoves = 1;
+            }
+            return players;
         }
         private void Restart()
         {
@@ -79,9 +92,20 @@ namespace SR.Controllers
         public void SendMoves(ExportMove[] Moves)
         {
             CurrentServer.game.PlayerReady.Add(Context.ConnectionId);
+            if (CurrentServer.game.CurrentTurnPhase == GameState.TurnPhase.OrderPlacing)
+            {
+                foreach (ExportMove move in Moves)
+                {
+
+                }
+            }
             if (CurrentServer.game.PlayerReady.Count == CurrentServer.PlayerList.Count)
             {
-                Clients.All.startRound(CurrentServer.PlayerList, CurrentServer.game.Regions);
+                if (CurrentServer.game.CurrentTurnPhase == GameState.TurnPhase.OrderPlacing)
+                {
+                    CurrentServer.game.CurrentTurnPhase = GameState.TurnPhase.RaidResolve;
+                }
+                Clients.All.startRound(GetExportPlayers(), CurrentServer.game.Regions,CurrentServer.game.CurrentTurnPhase);
             }
         }
         public override Task OnDisconnected(bool stopped)

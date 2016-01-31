@@ -68,7 +68,6 @@ var World = (function () {
         this.CameraY = 0;
         this.CameraWidth = 0;
         this.CameraHeight = 0;
-        this.MyPlayer = 0;
         this.SelectedRegion = -1;
         this.MenuDiv = document.getElementById("MenuDiv");
         this.Regions = new Array();
@@ -120,6 +119,18 @@ var World = (function () {
         return -1;
     };
     return World;
+})();
+var RaidTurn = (function () {
+    function RaidTurn() {
+        this.GreyDiv = document.getElementById("GreyDiv");
+        this.RaidDiv = document.getElementById("RaidDiv");
+        this.GreyDiv.style.visibility = "hidden";
+    }
+    RaidTurn.prototype.Start = function () {
+        this.GreyDiv.style.visibility = "visible";
+        this.RaidDiv.style.visibility = "visible";
+    };
+    return RaidTurn;
 })();
 function ButtonDown(event) {
     if (event.button != 2) {
@@ -213,6 +224,7 @@ var PowerCounter;
 var MapName;
 var PlayerId = "";
 var world;
+var RaidTurnObject;
 //Player info
 var PlayerUUID = "";
 //Init async handerlers
@@ -265,13 +277,13 @@ var MainLoop = null;
 gameHub.client.forceOff = function () {
     document.location.pathname = "Game/Denied/";
 };
-gameHub.client.startRound = function (players, regions) {
+gameHub.client.startRound = function (players, regions, gameState) {
     console.log("Start game");
     world.Players = players;
     world.GameReadied = false;
     for (var i = 0; i < world.Players.length; ++i) {
         if (world.Players[i].PlayerId == PlayerId) {
-            world.MyPlayer = i;
+            world.MyPlayer = world.Players[i];
             world.MovesLeft = world.Players[i].Moves[0];
             world.MovesStarLeft = world.Players[i].Moves[1];
             world.ConsolidatesLeft = world.Players[i].Moves[2];
@@ -284,15 +296,20 @@ gameHub.client.startRound = function (players, regions) {
     for (var i = 0; i < regions.length; ++i) {
         var region = regions[i];
         world.Regions[i].House = region.House;
+        world.Regions[i].MoveType = region.Move;
+    }
+    if (InitCount == 0) {
+        //Update map
+        world.RenderWorld();
+        if (gameState == 1) {
+            alert("Riad");
+            RaidTurnObject.Start();
+        }
     }
     if (MainLoop == null) {
         MainLoop = setInterval(function () {
             world.RenderWorld();
         }, 50);
-    }
-    if (InitCount != 0) {
-        //Update map
-        world.RenderWorld();
     }
 };
 gameHub.client.startGame = function (map, playerid) {
@@ -329,8 +346,9 @@ function Init(name) {
         Canvas.onmousemove = DragMap;
         Canvas.oncontextmenu = function (e) { return false; };
         world.MenuDiv.oncontextmenu = function (e) { return false; };
+        RaidTurnObject = new RaidTurn();
         $(".OrderRadio").change(function () {
-            if (world.SelectedRegion != null && world.Players[world.MyPlayer].House == world.Regions[world.SelectedRegion].House) {
+            if (world.SelectedRegion != null && world.MyPlayer.House == world.Regions[world.SelectedRegion].House) {
                 var MoveType = $(this).val();
                 if (world.Regions[world.SelectedRegion].MoveType == "Move") {
                     world.MovesLeft += 1;
@@ -393,8 +411,18 @@ function Init(name) {
 }
 $.connection.hub.start().done(function () {
     $("#TurnButton").click(function () {
-        var MoveList;
+        var MoveList = new Array();
         //Generate moves from js
+        for (var _i = 0, _a = world.Regions; _i < _a.length; _i++) {
+            var region = _a[_i];
+            if (region.House == world.MyPlayer.House) {
+                var move = new Consensus.Move();
+                move.RegionId = region.Id;
+                move.MoveType = region.MoveType;
+                MoveList.push(move);
+            }
+        }
+        RaidTurnObject.GreyDiv.style.visibility = "visible";
         world.GameReadied = true;
         world.MenuDiv.style.visibility = "collapse";
         world.SelectedRegion = -1;

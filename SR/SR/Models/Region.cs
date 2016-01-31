@@ -15,6 +15,7 @@ namespace SR.Models
         public int Supply = 0;
         public int Power = 0;
         public int Garrison = 0;
+        public string Move = "";
         enum Type {
         Land,Sea
         }

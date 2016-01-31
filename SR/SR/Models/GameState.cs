@@ -9,7 +9,11 @@ namespace SR.Models
 {
     public class GameState
     {
-        public int CurrentTurn = 0;
+        public enum TurnPhase {
+            OrderPlacing,RaidResolve,MoveResolve,SupplyResolve
+        }
+        public TurnPhase CurrentTurnPhase = TurnPhase.OrderPlacing;
+        public int CurrentTurn = -1;
         public int MaxTurns = 0;
         public List<string> PlayerReady = new List<string>();
         public List<PlayerModel> Players = new List<PlayerModel>();

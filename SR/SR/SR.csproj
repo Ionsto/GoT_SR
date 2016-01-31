@@ -156,6 +156,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\GameHub.cs" />
+    <Compile Include="Controllers\GameUIController.cs" />
     <Compile Include="Controllers\LobbyHub.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -176,6 +177,8 @@
     <Content Include="Views\Game\Game.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Game\Denied.cshtml" />
+    <Content Include="Views\Game\GameUI\MenuDiv.cshtml" />
+    <Content Include="Views\Game\GameUI\NewTurn.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
