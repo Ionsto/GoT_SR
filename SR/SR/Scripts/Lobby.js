@@ -13,6 +13,7 @@ lobbyProxy.client.startGame = function () {
     document.location.pathname = "Game/Game/?PlayerId=" + $.connection.hub.id;
 };
 lobbyProxy.client.lobbyPlayerList = function (list, house, ready) {
+    //alert("Updateinglobbylud");
     var outputdiv = $("#Output");
     outputdiv.empty();
     for (var i = 0; i < list.length; ++i) {
@@ -32,4 +33,3 @@ $.connection.hub.start().done(function () {
 }).fail(function () {
     console.log('Could not Connect!');
 });
-//# sourceMappingURL=Lobby.js.map

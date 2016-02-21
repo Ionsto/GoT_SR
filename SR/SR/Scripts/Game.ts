@@ -158,6 +158,7 @@ class World {
 }
 class RaidTurn
 {
+    Watching = true;//Wether the player is resolving or not
     RaidRegions: number;
     GreyDiv: HTMLDivElement;
     RaidDiv: HTMLDivElement;
@@ -167,14 +168,42 @@ class RaidTurn
         this.GreyDiv.style.visibility = "hidden";
     }
     Start() {
-        this.GreyDiv.style.visibility = "visible";
-        this.RaidDiv.style.visibility = "visible";
+        if (this.Watching) {
+            this.GreyDiv.style.animationName = "FadeToVisible";
+            this.GreyDiv.style.animationDuration = "5s";
+            this.RaidDiv.style.animationName = "FadeToVisible";
+            this.RaidDiv.style.animationDuration = "5s";
+            this.GreyDiv.style.visibility = "visible";
+            this.RaidDiv.style.visibility = "visible";
+        }
+        //Find if there are raid orders to be played
+        for (var i = 0; i < world.Regions.length; ++i) {
+            if (world.Regions[i].House == world.MyPlayer.House) {
+                if (world.Regions[i].MoveType == "Raid") {
+                    ++this.RaidRegions;
+                }
+            }
+        }
+    }
+    Update()
+    {
+        if (this.RaidRegions >= 0) {
+
+        }
+        if (this.RaidRegions == 0) {
+
+        }
     }
 }
-function ButtonDown(event: MouseEvent) {
+function ButtonDownPlanning(event: MouseEvent) {
     if (event.button != 2) {
         world.MenuDiv.style.visibility = "collapse";
         world.SelectedRegion = -1;
+    }
+}
+function ButtonDown(event: MouseEvent) {
+    if (GameState == 0) {
+        ButtonDownPlanning(event);
     }
     world.ButtonsDown[event.button] = true;
     return false;
@@ -216,7 +245,7 @@ function ButtonClear(event) {
         world.ButtonsDown[i] = false;
     }
 }
-function ButtonUp(event: MouseEvent) {
+function ButtonUpPlanning(event: MouseEvent) {
     if (world.ButtonsDown[2] && !world.GameReadied) {
         world.MenuDiv.style.visibility = "visible";
         var X = event.pageX - Canvas.offsetLeft;
@@ -229,6 +258,11 @@ function ButtonUp(event: MouseEvent) {
         }
         UpdateMoveDiv();
         world.SelectedRegion = world.GetRegionWithPoint(X + world.CameraX, Y + world.CameraY);
+    }
+}
+function ButtonUp(event: MouseEvent) {
+    if (GameState == 0) {
+        ButtonUpPlanning(event);
     }
     world.ButtonsDown[event.button] = false;
     return false;
@@ -297,20 +331,14 @@ function gup(name, url) {
     return results == null ? null : results[1];
 }
 PlayerUUID = gup('PlayerId', document.location.search);
-var GameState:number;//0 Planning Phase, 1 Resolving Raids, 2 Resolving Power, 3 Resolving Movements,4 Bidding
+var GameState:number = 0;//0 Planning Phase, 1 Resolving Raids, 2 Resolving Power, 3 Resolving Movements,4 Bidding,
 PowerCounter = <HTMLDivElement>document.getElementById("PowerCounter");
 Canvas = <HTMLCanvasElement>document.getElementById("RenderCanvas");
 Ctx = Canvas.getContext("2d");
 
 var gameHub = $.connection.gameHub;
 var MainLoop = null;
-gameHub.client.forceOff = function () {
-    document.location.pathname = "Game/Denied/";
-}
-gameHub.client.startRound = function (players: Consensus.Player[], regions: Consensus.Region[], gameState: number) {
-    console.log("Start game");
-    world.Players = players;
-    world.GameReadied = false;
+function StartPlanning(players: Consensus.Player[], regions: Consensus.Region[]) {
     for (var i = 0; i < world.Players.length; ++i) {
         if (world.Players[i].PlayerId == PlayerId) {
             world.MyPlayer = world.Players[i];
@@ -323,18 +351,47 @@ gameHub.client.startRound = function (players: Consensus.Player[], regions: Cons
             world.MaxStarMoves = world.Players[i].MaxStarMoves;
         }
     }
+}
+function DoRaid(players: Consensus.Player[], regions: Consensus.Region[], RaidPlayer: number) {
+
+}
+function StartConsoidate() {
+    //Players do 
+}
+function DoMove() {
+    //Done for each player, where then can move one attack
+}
+function ResolveSupply() {
+    //Each time a move is made that could have a supply event
+}
+gameHub.client.forceOff = function () {
+    document.location.pathname = "Game/Denied/";
+}
+
+gameHub.client.startRound = function (players: Consensus.Player[], regions: Consensus.Region[], gameState: number) {
+    console.log("Start game");
+    world.Players = players;
+    world.GameReadied = false;
     for (var i = 0; i < regions.length;++i)
     {
         var region = regions[i];
         world.Regions[i].House = region.House;
         world.Regions[i].MoveType = region.Move;
     }
+    if (gameState == 0) {
+        StartPlanning(players, regions);
+        GameState = 0;
+    }
+    if (gameState == 1) {
+        StartPlanning(players, regions);
+        GameState = 1;
+    }
     if (InitCount == 0) {
         //Update map
         world.RenderWorld();
         if (gameState == 1)
         {
-            alert("Riad");
+            //alert("Riad");
             RaidTurnObject.Start();
         }
     }
@@ -344,7 +401,8 @@ gameHub.client.startRound = function (players: Consensus.Player[], regions: Cons
         }, 50);
     }
 }
-gameHub.client.startGame = function (map: string,playerid:string) {
+
+gameHub.client.startGame = function (map: string, playerid: string) {
     MapName = map;
     PlayerId = playerid;
     WorldMap.onload = function () { Init("World map"); };

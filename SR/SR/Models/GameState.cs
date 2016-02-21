@@ -29,6 +29,17 @@ namespace SR.Models
             }
             return null;
         }
+        public int GetPlayerFromContext(string context)
+        {
+            for(int i = 0;i < Players.Count;++i)
+            {
+                if (Players[i].GameId == context)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
         public void Init()
         {
             foreach(Region reg in Regions)

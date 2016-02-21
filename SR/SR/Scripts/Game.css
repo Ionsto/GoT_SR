@@ -1,4 +1,12 @@
-﻿#MenuDiv{
+﻿@keyframes FadeToVisible{
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity:initial;
+    }
+}
+#MenuDiv{
     position:absolute;
     visibility:collapse;
     background-color:white;

@@ -105,7 +105,16 @@ namespace SR.Controllers
                 {
                     CurrentServer.game.CurrentTurnPhase = GameState.TurnPhase.RaidResolve;
                 }
-                Clients.All.startRound(GetExportPlayers(), CurrentServer.game.Regions,CurrentServer.game.CurrentTurnPhase);
+                Clients.All.DoRaid(GetExportPlayers(), CurrentServer.game.Regions,0);
+            }
+        }
+        public void UpdateRaid(int[] Locations)
+        {
+            //0 is the raid location, 1 is the location to be raided
+            int playerid = CurrentServer.game.GetPlayerFromContext(Context.ConnectionId);
+            if (playerid + 1 != CurrentServer.game.Players.Count)
+            {
+                //Call the next player to resolve
             }
         }
         public override Task OnDisconnected(bool stopped)

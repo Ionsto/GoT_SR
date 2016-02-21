@@ -31,6 +31,7 @@ namespace SR.Controllers
                     CurrentServer.lobby.LobbyLeader = CurrentServer.PlayerList[0];
                 }
                 //Send list of all players
+                
                 UpdateLobbyList();
             }
         }

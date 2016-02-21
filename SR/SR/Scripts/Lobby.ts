@@ -28,7 +28,8 @@ var lobbyProxy = $.connection.lobbyHub;
 lobbyProxy.client.startGame = function () {
     document.location.pathname = "Game/Game/?PlayerId=" + $.connection.hub.id;
 };
-lobbyProxy.client.lobbyPlayerList = function (list: string[], house:string[], ready:boolean[]) {
+lobbyProxy.client.lobbyPlayerList = function (list: string[], house: string[], ready: boolean[]) {
+    //alert("Updateinglobbylud");
     var outputdiv = $("#Output");
     outputdiv.empty();
     for (var i = 0; i < list.length; ++i) {
