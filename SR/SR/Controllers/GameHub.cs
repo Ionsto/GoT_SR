@@ -62,7 +62,7 @@ namespace SR.Controllers
             {
                 //Players is rejoining
                 CurrentServer.game.CurrentTurn = 0;
-                Clients.Caller.startRound(GetExportPlayers(), CurrentServer.game.Regions);
+                Clients.Caller.startRound(GetExportPlayers(), CurrentServer.game.Regions,0);
             }
 
         }

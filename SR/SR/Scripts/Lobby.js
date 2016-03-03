@@ -33,3 +33,4 @@ $.connection.hub.start().done(function () {
 }).fail(function () {
     console.log('Could not Connect!');
 });
+//# sourceMappingURL=Lobby.js.map
